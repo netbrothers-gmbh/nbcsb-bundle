@@ -3,11 +3,15 @@
   "description": "Creating skeleton structure for symfony bundle",
   "type": "symfony-bundle",
   "version": "0.0.1",
+  "keywords": ["symfony","bundle","helper","symfony command line"],
+  "homepage": "https://github.com/netbrothers-gmbh/nbcsb-bundle",
   "license": "MIT",
   "authors": [
     {
       "name": "Stefan Wessel",
-      "email": "info@netbrothers.de"
+      "email": "info@netbrothers.de",
+      "homepage": "https://netbrothers.de",
+      "role": "Developer"
     }
   ],
   "require": {
