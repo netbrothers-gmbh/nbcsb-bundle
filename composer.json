@@ -1,6 +1,6 @@
 {
   "name": "netbrothers-gmbh/nbcsb-bundle",
-  "description": "Creating skeleton structure for symfony bundle",
+  "description": "Creating skeleton structure for symfony bundle with one single command. Creates directory structure and necessary files, activates your bundle. See: https://netbrothers.de/easy-create-reusable-symfony-bundle",
   "type": "symfony-bundle",
   "version": "0.0.1",
   "keywords": ["symfony","bundle","helper","symfony command line"],
