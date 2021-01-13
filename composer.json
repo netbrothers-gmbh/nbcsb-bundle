@@ -1,0 +1,30 @@
+{
+  "name": "netbrothers-gmbh/nbcsb-bundle",
+  "description": "Creating skeleton structure for symfony bundle",
+  "type": "symfony-bundle",
+  "version": "0.0.1",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Stefan Wessel",
+      "email": "info@netbrothers.de"
+    }
+  ],
+  "require": {
+    "php": ">=7.2.5",
+    "symfony/console": "5.*",
+    "symfony/serializer": "5.*",
+    "symfony/string": "5.*",
+    "symfony/yaml": "5.*"
+  },
+  "autoload": {
+    "psr-4": {
+      "NetBrothers\\NbCsbBundle\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "NetBrothers\\NbCsbBundle\\Tests\\": "tests/"
+    }
+  }
+}
