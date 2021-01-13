@@ -82,6 +82,8 @@ Author
 ======
 [Stefan Wessel, NetBrothers GmbH](https://netbrothers.de)
 
+[![nb.logo](https://netbrothers.de/wp-content/uploads/2020/12/netbrothers_logo.png)](https://netbrothers.de)
+
 Licence
 =======
 MIT
