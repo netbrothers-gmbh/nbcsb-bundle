@@ -74,8 +74,8 @@ Configuration
 =============
 If you prefer to change templates:
 - Find under `installation/templates` basic templates. Copy them to any place you like.
-- Copy `installation/config/packages/netbrothers_createbundle.yaml` to symfony's config path
-- Insert into `netbrothers_createbundle.yaml` your template path.
+- Copy `installation/config/packages/netbrothers_nbcsb.yaml` to symfony's config path
+- Insert into `netbrothers_nbcsb.yaml` your template path.
 - Clear symfony's cache.
 
 Author
