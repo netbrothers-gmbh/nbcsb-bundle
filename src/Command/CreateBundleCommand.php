@@ -11,6 +11,7 @@
 namespace NetBrothers\NbCsbBundle\Command;
 
 use NetBrothers\NbCsbBundle\Services\CreateBundleService;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -22,15 +23,18 @@ use Symfony\Component\Console\Style\SymfonyStyle;
  * Class CreateBundleCommand
  * @package NetBrothers\NbCreateSymfonyBundle\Command
  */
+#[AsCommand(
+    name: 'netbrothers:make-bundle',
+    description: 'Creates symfony bundle under `src`',
+)]
 class CreateBundleCommand  extends Command
 {
-    protected static $defaultName = 'netbrothers:make-bundle';
 
-    /** @var array templates to manipulate */
-    private $templateFiles = [];
+    /** @var string[] templates to manipulate */
+    private array $templateFiles = [];
 
     /** @var string[] template files in templateDir */
-    private $templates = [
+    private array $templates = [
         'bundle' => 'Bundle.txt',
         'extension' => 'Extension.txt',
         'services' => 'services.xml',
@@ -38,19 +42,14 @@ class CreateBundleCommand  extends Command
     ];
 
     /** @var array benötigte Haupt-Schlüssel in der Konfiguration */
-    private $configKeys = ['template_dir'];
+    private array $configKeys = ['template_dir'];
 
     /** @var array */
-    private $config = [];
+    private array $config = [];
 
-    /**
-     *  command config
-     */
-    protected function configure()
+    protected function configure(): void
     {
-        $this
-            ->setDescription('Creates symfony bundle under `src`')
-            ->addArgument('bundleName', InputArgument::REQUIRED, 'name of bundle');
+        $this->addArgument('bundleName', InputArgument::REQUIRED, 'name of bundle');
     }
 
     /**
@@ -60,9 +59,9 @@ class CreateBundleCommand  extends Command
      */
     public function __construct(array $config = [])
     {
-        parent::__construct();
         $this->setConfig($config);
         $this->setTemplates();
+        parent::__construct();
     }
 
     /** setting config
@@ -70,7 +69,7 @@ class CreateBundleCommand  extends Command
      * @param array $config
      * @throws \Exception
      */
-    private function setConfig(array $config = [])
+    private function setConfig(array $config = []): void
     {
         foreach ($this->configKeys as $key) {
             if (!array_key_exists($key, $config)) {
@@ -90,7 +89,7 @@ class CreateBundleCommand  extends Command
      *
      * @throws \Exception
      */
-    private function setTemplates()
+    private function setTemplates(): void
     {
         if ($this->config['template_dir'] == 'default') {
             $templateDir = __DIR__ . '/../../installation/templates/';
@@ -134,7 +133,7 @@ class CreateBundleCommand  extends Command
 
         if (true !== $this->checkBundleName($bundleName)) {
             $io->error('Wrong name - pattern does not match ^([A-Z][a-z]*([A-Z][a-z]*)*Bundle)$');
-            return 1;
+            return Command::INVALID;
         }
 
         $pathToWrite = getcwd() . '/src/';
@@ -152,11 +151,11 @@ class CreateBundleCommand  extends Command
 
         if (true !== $service->createBundleDirectories()) {
             $io->error($service->getErrMsg());
-            return 1;
+            return Command::FAILURE;
         }
         if (true !== $service->copyRessourceFiles()) {
             $io->error($service->getErrMsg());
-            return 1;
+            return Command::FAILURE;
         }
 
         $service->createBundleClasses();
@@ -170,10 +169,10 @@ class CreateBundleCommand  extends Command
             $errMsg .= 'Check Error and repair your system. You may have to ';
             $errMsg .= 'activate the bundle in bundles.php by yourself.';
             $io->caution($errMsg);
-            return 1;
+            return Command::FAILURE;
         }
 
         $io->success('Bundle created');
-        return 0;
+        return Command::SUCCESS;
     }
 }

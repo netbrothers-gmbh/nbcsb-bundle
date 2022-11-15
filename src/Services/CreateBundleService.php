@@ -17,36 +17,18 @@ namespace NetBrothers\NbCsbBundle\Services;
 class CreateBundleService
 {
     const RESSOURCE_DIR = '/Resources/config';
-
     const DEPENDENCY_DIR = '/DependencyInjection';
 
-    /** @var string[]  */
-    private $otherDirs = ['/Controller', '/Services', '/Tests'];
+    private array $otherDirs = ['/Controller', '/Services', '/Tests'];
+    private string $resourcesDir = '/Resources/config';
+    private string $dependencyDir = '/DependencyInjection';
+    private int $dirMode;
 
-    /** @var string */
-    private $ressourcesDir = '/Resources/config';
+    private string $workingDir;
+    private string $errMsg;
+    private string $bundleName;
+    private array $templateFiles;
 
-    /** @var string */
-    private $dependencyDir = '/DependencyInjection';
-
-    /** @var int */
-    private $dirMode;
-
-    /** @var string */
-    private $workingDir;
-
-    /** @var string */
-    private $errMsg;
-
-    /** @var string */
-    private $bundleName;
-
-    /** @var array */
-    private $templateFiles;
-
-    /**
-     * @return string
-     */
     public function getErrMsg(): string
     {
         return $this->errMsg;
@@ -85,7 +67,7 @@ class CreateBundleService
         if (true !== $this->createDir($resDir)) {
             return false;
         }
-        $this->ressourcesDir = $resDir;
+        $this->resourcesDir = $resDir;
         $depDir = $this->workingDir . self::DEPENDENCY_DIR;
         if (true !== $this->createDir($depDir)) {
             return false;
@@ -107,9 +89,9 @@ class CreateBundleService
     {
         foreach ($this->templateFiles as $key => $template) {
             if ($key == 'services' || $key == 'routes') {
-                $dest = $this->ressourcesDir . "/$key.xml";
+                $dest = $this->resourcesDir . "/$key.xml";
                 if (true !== copy($template, $dest)) {
-                    $this->errMsg = 'Cannot copy ' . $key . '.xml to  ' . $this->ressourcesDir;
+                    $this->errMsg = 'Cannot copy ' . $key . '.xml to  ' . $this->resourcesDir;
                     return false;
                 }
             }
@@ -120,7 +102,7 @@ class CreateBundleService
     /** creating Bundle.php and Extension.php
      *
      */
-    public function createBundleClasses()
+    public function createBundleClasses(): void
     {
         $datum = date('d.m.Y');
         $shortName = str_replace('Bundle', '', $this->bundleName);
@@ -128,10 +110,10 @@ class CreateBundleService
         foreach ($this->templateFiles as $key => $template) {
             if ($key == 'bundle' || $key == 'extension') {
                 $content = file_get_contents($template);
-                $content = preg_replace('/\{#bundleName\}/', $this->bundleName, $content);
-                $content = preg_replace('/\{#bundleShortName\}/', $shortName, $content);
-                $content = preg_replace('/\{#bundleSmallShortName\}/', $bundleSmallShortName, $content);
-                $content = preg_replace('/\{#datum\}/', $datum, $content);
+                $content = preg_replace('/\{#bundleName}/', $this->bundleName, $content);
+                $content = preg_replace('/\{#bundleShortName}/', $shortName, $content);
+                $content = preg_replace('/\{#bundleSmallShortName}/', $bundleSmallShortName, $content);
+                $content = preg_replace('/\{#datum}/', $datum, $content);
                 $fileName = ($key == 'bundle') ? $this->bundleName . '.php' : $shortName . 'Extension.php';
                 $dest = ($key == 'bundle') ? $this->workingDir . "/$fileName" : $this->dependencyDir . "/$fileName";
                 file_put_contents($dest, $content);
@@ -174,7 +156,7 @@ class CreateBundleService
         }
         $fp = fopen($bundlePhp, 'w');
         foreach ($contentArray as $line) {
-            if (preg_match('/(\];)/', $line)) {
+            if (preg_match('/(];)/', $line)) {
                 $newLine = "\t$className::class => ['all' => true],\n";
                 fwrite($fp, $newLine);
             }
