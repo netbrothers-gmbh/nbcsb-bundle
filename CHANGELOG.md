@@ -1,7 +1,7 @@
 Changelog for NetBrothers Create Symfony Bundle
 ===================================
 
-Version 1.1.0 - 06.12.2023
+Version 2.0.1 - 06.12.2023
 ----------------------------------
 - symfony requirements updated in composer.json to >=6 <7
 
