@@ -1,2 +1,3 @@
-netbrothers_nbcsb:
-  template_dir: 'default'
+when@dev:
+  netbrothers_nbcsb:
+    template_dir: 'default'
