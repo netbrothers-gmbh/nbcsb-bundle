@@ -78,6 +78,7 @@ class CreateBundleService
             if (true !== $this->createDir($oDir)) {
                 return false;
             }
+            $this->addGitIgnoreToDirectory($oDir);
         }
         return true;
     }
@@ -181,5 +182,11 @@ class CreateBundleService
             return false;
         }
         return true;
+    }
+
+    private function addGitIgnoreToDirectory(string $dir): void
+    {
+        $filename = $dir . '/.gitignore';
+        touch($filename);
     }
 }
